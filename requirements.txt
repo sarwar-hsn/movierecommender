@@ -34,6 +34,7 @@ oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==23.1
 pandas==2.0.3
+pkg_resources==0.0.0
 protobuf==4.23.3
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
@@ -54,7 +55,7 @@ tensorflow-estimator==2.12.0
 tensorflow-io-gcs-filesystem==0.32.0
 termcolor==2.3.0
 threadpoolctl==3.1.0
-typing-extensions==4.7.1
+typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==1.26.16
 Werkzeug==2.3.6
