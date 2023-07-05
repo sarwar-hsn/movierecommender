@@ -3,12 +3,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import tensorflow as tf
 import warnings
+import os
 
 warnings.filterwarnings("ignore")
 
+
 # Load datasets
-credit = pd.read_csv('recommender/tmdb_5000_credits.csv')
-movies = pd.read_csv('recommender/tmdb_5000_movies.csv')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+credit_file = os.path.join(current_dir, 'tmdb_5000_credits.csv')
+movies_file = os.path.join(current_dir, 'tmdb_5000_movies.csv')
+
+credit = pd.read_csv(credit_file)
+movies = pd.read_csv(movies_file)
 
 integrated = pd.concat([credit,movies], axis = 1)
 df = integrated[['original_title','cast','crew','budget','release_date','genres','keywords','original_language','overview','popularity','production_companies','production_countries','revenue','runtime','spoken_languages','vote_average']]
@@ -43,5 +49,8 @@ model.fit(cosine_sim, cosine_sim, epochs=5, batch_size=100)
 # Save the model
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
-with open("movie_recommender.tflite", "wb") as f:
+
+model_path = os.path.join(current_dir, 'movie_recommender.tflite')
+with open(model_path, "wb") as f:
     f.write(tflite_model)
+

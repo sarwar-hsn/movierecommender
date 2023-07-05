@@ -4,10 +4,17 @@ import tensorflow as tf
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from fuzzywuzzy import process
+import os
 
 # Load datasets
-credit = pd.read_csv('recommender/tmdb_5000_credits.csv')
-movies = pd.read_csv('recommender/tmdb_5000_movies.csv')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+credit_file = os.path.join(current_dir, 'tmdb_5000_credits.csv')
+movies_file = os.path.join(current_dir, 'tmdb_5000_movies.csv')
+
+credit = pd.read_csv(credit_file)
+movies = pd.read_csv(movies_file)
+
+
 integrated = pd.concat([credit, movies], axis=1)
 df = integrated[['original_title', 'id', 'cast', 'crew', 'budget', 'release_date', 'genres', 'keywords', 'original_language', 'overview', 'popularity', 'production_companies', 'production_countries', 'revenue', 'runtime', 'spoken_languages', 'vote_average']]
 
@@ -26,7 +33,8 @@ tfidf_matrix = tfidf.fit_transform(df["text"].fillna(''))
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
 # Load the model
-interpreter = tf.lite.Interpreter(model_path="movie_recommender.tflite")
+model_path = os.path.join(current_dir, 'movie_recommender.tflite')
+interpreter = tf.lite.Interpreter(model_path=model_path)
 interpreter.allocate_tensors()
 
 # Define function to get recommendations
