@@ -36,6 +36,9 @@ class MovieInfo(Resource):
 
 api.add_resource(MovieInfo, '/info/<int:movie_id>')
 
+@app.route("/")
+def hello():
+    return "<h1 style='color:blue'>server available</h1>"
 
-# if __name__ == "__main__":
-#         app.run(debug=False,host="0.0.0.0",port="5000")
+if __name__ == "__main__":
+        app.run(host="0.0.0.0")
